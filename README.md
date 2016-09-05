@@ -98,7 +98,22 @@ PubSub::connection('kafka')->subscribe('channel_name', function ($message) {
 });
 ```
 
-## TODO
+## Adding a Custom Driver
 
-* Documentation
+Please see the [php-pubsub](https://github.com/Superbalist/php-pubsub) documentation  **Writing an Adapter**.
+
+To include your custom driver, you can call the ```extend()``` function.
+
+```php
+$manager = app('pubsub');
+$manager->extend('custom_connection_name', function ($config) {
+    // your callable must return an instance of the PubSubAdapterInterface
+    return new MyCustomPubSubDriver($config);
+});
+
+// get an instance of your custom connection
+$pubsub = $manager->connection('custom_connection_name');
+```
+
+## TODO
 * Unit Tests
