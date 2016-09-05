@@ -33,7 +33,7 @@ class PubSubConnectionFactory
             case 'kafka':
                 return $this->makeKafkaAdapter($config);
             case 'gcloud':
-                return $this->makeGoogeCloudAdapter($config);
+                return $this->makeGoogleCloudAdapter($config);
         }
 
         throw new InvalidArgumentException(sprintf('The driver [%s] is not supported.', $driver));
@@ -90,7 +90,7 @@ class PubSubConnectionFactory
      * @param array $config
      * @return GoogleCloudPubSubAdapter
      */
-    protected function makeGoogeCloudAdapter(array $config)
+    protected function makeGoogleCloudAdapter(array $config)
     {
         $client = new GoogleCloudPubSubClient([
             'projectId' => $config['project_id'],
