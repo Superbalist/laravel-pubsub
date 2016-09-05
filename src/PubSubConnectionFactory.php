@@ -94,7 +94,7 @@ class PubSubConnectionFactory
     {
         $client = new GoogleCloudPubSubClient([
             'projectId' => $config['project_id'],
-            'keyFile' => $config['key_file'],
+            'keyFilePath' => $config['key_file'],
         ]);
 
         return new GoogleCloudPubSubAdapter($client);
