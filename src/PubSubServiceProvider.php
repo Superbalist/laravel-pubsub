@@ -46,6 +46,8 @@ class PubSubServiceProvider extends ServiceProvider
             $manager = $app['pubsub']; /** @var PubSubManager $manager */
             return $manager->connection();
         });
+
+        $this->commands(SubscriberMakeCommand::class);
     }
 
     /**
