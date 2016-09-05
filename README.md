@@ -63,7 +63,39 @@ Register the facade in app.php
 ## Usage
 
 ```php
-// TODO:
+// get the pub-sub manager
+$pubsub = app('pubsub');
+
+// note: function calls on the manager are proxies through to the default connection
+// eg: you can do this on the manager OR a connection
+$pubsub->publish('channel_name', 'message');
+
+// get the default connection
+$pubsub = app('pubsub.connection');
+// or
+$pubsub = app(\Superbalist\PubSub\PubSubAdapterInterface::class);
+
+// get a specific connection
+$pubsub = app('pubsub')->connection('redis');
+
+// publish a message
+// the message can be a string, array, json string, bool, object - anything which can be serialized
+$pubsub->publish('channel_name', 'this is where your message goes');
+$pubsub->publish('channel_name', ['key' => 'value']);
+$pubsub->publish('channel_name', '{"key": "value"}');
+$pubsub->publish('channel_name', true);
+
+// subscribe to a channel
+$pubsub->subscribe('channel_name', function ($message) {
+    var_dump($message);
+});
+
+// all the aboce commands can also be done using the facade
+PubSub::connection('kafka')->publish('channel-name', 'Hello World!');
+
+PubSub::connection('kafka')->subscribe('channel_name', function ($message) {
+    var_dump($message);
+});
 ```
 
 ## TODO
