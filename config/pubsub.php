@@ -55,7 +55,7 @@ return [
         'gcloud' => [
             'driver' => 'gcloud',
             'project_id' => env('GOOGLE_CLOUD_PROJECT_ID'),
-            'key_file' => env('GOOGLE_CLOUD_CREDENTIALS_FILE'),
+            'key_file' => env('GOOGLE_CLOUD_KEY_FILE'),
         ],
 
     ],
