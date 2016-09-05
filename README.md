@@ -23,6 +23,43 @@ The following adapters are supported:
 composer require superbalist/laravel-pubsub
 ```
 
+The package has a default configuration which uses the following environment variables.
+```
+PUBSUB_CONNECTION=redis
+
+REDIS_HOST=localhost
+REDIS_PASSWORD=null
+REDIS_PORT=6379
+
+KAFKA_BROKERS=localhost
+
+GOOGLE_CLOUD_PROJECT_ID=your-project-id-here
+GOOGLE_CLOUD_KEY_FILE=path/to/your/gcloud-key.json
+```
+
+To customize the configuration file, publish the package configuration using Artisan.
+```bash
+php artisan vendor:publish --provider="Superbalist\LaravelPubSub\PubSubServiceProvider"
+```
+
+You can then edit the generated config at `app/config/pubsub.php`.
+
+Register the service provider in app.php
+```php
+'providers' => [
+    // ...
+    Superbalist\LaravelPubSub\PubSubServiceProvider::class,
+]
+```
+
+Register the facade in app.php
+```php
+'aliases' => [
+    // ...
+    'PubSub' => Superbalist\LaravelPubSub\PubSubFacade::class,
+]
+```
+
 ## Usage
 
 ```php
