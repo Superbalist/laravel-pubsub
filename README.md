@@ -66,7 +66,7 @@ Register the facade in app.php
 // get the pub-sub manager
 $pubsub = app('pubsub');
 
-// note: function calls on the manager are proxies through to the default connection
+// note: function calls on the manager are proxied through to the default connection
 // eg: you can do this on the manager OR a connection
 $pubsub->publish('channel_name', 'message');
 
