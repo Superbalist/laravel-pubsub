@@ -29,8 +29,8 @@ return [
 
     'connections' => [
 
-        'null' => [
-            'driver' => 'null',
+        '/dev/null' => [
+            'driver' => '/dev/null',
         ],
 
         'local' => [
