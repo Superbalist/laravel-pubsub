@@ -24,7 +24,7 @@ class PubSubConnectionFactory
     public function make($driver, array $config)
     {
         switch ($driver) {
-            case 'null':
+            case '/dev/null':
                 return new DevNullPubSubAdapter();
             case 'local':
                 return new LocalPubSubAdapter();

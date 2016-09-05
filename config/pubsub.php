@@ -9,7 +9,7 @@ return [
     |
     | The default pub-sub connection to use.
     |
-    | Supported: "null", "local", "redis", "kafka", "gcloud"
+    | Supported: "/dev/null", "local", "redis", "kafka", "gcloud"
     |
     */
 
