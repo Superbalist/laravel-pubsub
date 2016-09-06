@@ -86,6 +86,11 @@ class PubSubServiceProvider extends ServiceProvider
             'pubsub',
             'pubsub.factory',
             'pubsub.connection',
+            'pubsub.redis.redis_client',
+            'pubsub.gcloud.pub_sub_client',
+            'pubsub.kafka.topic_conf',
+            'pubsub.kafka.producer',
+            'pubsub.kafka.consumer',
         ];
     }
 }
