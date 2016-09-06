@@ -14,7 +14,7 @@ The following adapters are supported:
 * Local
 * /dev/null
 * Redis
-* Kafka
+* Kafka (see separate installation instructions below)
 * Google Cloud
 
 ## Installation
@@ -58,6 +58,21 @@ Register the facade in app.php
     // ...
     'PubSub' => Superbalist\LaravelPubSub\PubSubFacade::class,
 ]
+```
+
+## Kafka Adapter Installation
+
+Please note that whilst the package is bundled with support for the [php-pubsub-kafka](https://github.com/Superbalist/php-pubsub-kafka)
+adapter, the adapter is not included by default.
+
+This is because the KafkaPubSubAdapter has an external dependency on the `librdkafka c library` and the `php-rdkafka`
+PECL extension.
+
+If you plan on using this adapter, you will need to install these dependencies by following these [installation instructions](https://github.com/Superbalist/php-pubsub-kafka).
+
+You can then include the adapter using:
+```bash
+composer require superbalist/php-pubsub-kafka
 ```
 
 ## Usage

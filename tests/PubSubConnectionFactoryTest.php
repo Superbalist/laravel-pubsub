@@ -64,6 +64,10 @@ class PubSubConnectionFactoryTest extends TestCase
 
     public function testMakeKafkaAdapter()
     {
+        if (!class_exists('\Superbalist\PubSub\Kafka\KafkaPubSubAdapter')) {
+            $this->markTestSkipped('KafkaPubSubAdapter is not installed');
+        }
+
         $container = Mockery::mock(Container::class);
 
         $topicConf = Mockery::mock(\RdKafka\TopicConf::class);
