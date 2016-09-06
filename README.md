@@ -114,6 +114,3 @@ $manager->extend('custom_connection_name', function ($config) {
 // get an instance of your custom connection
 $pubsub = $manager->connection('custom_connection_name');
 ```
-
-## TODO
-* Unit Tests

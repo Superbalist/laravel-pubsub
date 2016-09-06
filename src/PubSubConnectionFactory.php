@@ -2,9 +2,8 @@
 
 namespace Superbalist\LaravelPubSub;
 
-use Google\Cloud\PubSub\PubSubClient as GoogleCloudPubSubClient;
+use Illuminate\Contracts\Container\Container;
 use InvalidArgumentException;
-use Predis\Client as RedisClient;
 use Superbalist\PubSub\Adapters\DevNullPubSubAdapter;
 use Superbalist\PubSub\Adapters\LocalPubSubAdapter;
 use Superbalist\PubSub\GoogleCloud\GoogleCloudPubSubAdapter;
@@ -15,13 +14,26 @@ use Superbalist\PubSub\Redis\RedisPubSubAdapter;
 class PubSubConnectionFactory
 {
     /**
+     * @var Container
+     */
+    protected $container;
+
+    /**
+     * @param Container $container
+     */
+    public function __construct(Container $container)
+    {
+        $this->container = $container;
+    }
+
+    /**
      * Factory a PubSubAdapterInterface.
      *
      * @param string $driver
      * @param array $config
      * @return PubSubAdapterInterface
      */
-    public function make($driver, array $config)
+    public function make($driver, array $config = [])
     {
         switch ($driver) {
             case '/dev/null':
@@ -51,7 +63,7 @@ class PubSubConnectionFactory
             $config['read_write_timeout'] = 0;
         }
 
-        $client = new RedisClient($config);
+        $client = $this->container->make('pubsub.redis.redis_client', [$config]);
 
         return new RedisPubSubAdapter($client);
     }
@@ -65,23 +77,20 @@ class PubSubConnectionFactory
     protected function makeKafkaAdapter(array $config)
     {
         // use this topic config for both the producer and consumer
-        $topicConfig = new \RdKafka\TopicConf();
-        $topicConfig->set('auto.offset.reset', 'smallest');
-        $topicConfig->set('auto.commit.interval.ms', 300);
+        $topicConf = $this->container->make('pubsub.kafka.topic_conf');
+        $topicConf->set('auto.offset.reset', 'smallest');
+        $topicConf->set('auto.commit.interval.ms', 300);
 
         // create producer
-        $producer = new \RdKafka\Producer();
+        $producer = $this->container->make('pubsub.kafka.producer');
         $producer->addBrokers($config['brokers']);
 
         // create consumer
         // see https://arnaud-lb.github.io/php-rdkafka/phpdoc/rdkafka.examples-high-level-consumer.html
-        $consumerConfig = new \RdKafka\Conf();
-        $consumerConfig->set('group.id', 'php-pubsub');
-
-        $consumer = new \RdKafka\Consumer($consumerConfig);
+        $consumer = $this->container->make('pubsub.kafka.consumer');
         $consumer->addBrokers($config['brokers']);
 
-        return new KafkaPubSubAdapter($producer, $consumer, $topicConfig);
+        return new KafkaPubSubAdapter($producer, $consumer, $topicConf);
     }
 
     /**
@@ -92,10 +101,11 @@ class PubSubConnectionFactory
      */
     protected function makeGoogleCloudAdapter(array $config)
     {
-        $client = new GoogleCloudPubSubClient([
+        $clientConfig = [
             'projectId' => $config['project_id'],
             'keyFilePath' => $config['key_file'],
-        ]);
+        ];
+        $client = $this->container->make('pubsub.gcloud.pub_sub_client', [$clientConfig]);
 
         return new GoogleCloudPubSubAdapter($client);
     }

@@ -84,7 +84,13 @@ class SubscriberMakeCommand extends GeneratorCommand
     protected function getOptions()
     {
         return [
-            ['command', null, InputOption::VALUE_OPTIONAL, 'The terminal command that should be assigned.', 'subscriber:name'],
+            [
+                'command',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'The terminal command that should be assigned.',
+                'subscriber:name'
+            ],
         ];
     }
 }

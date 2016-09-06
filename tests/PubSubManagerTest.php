@@ -6,7 +6,6 @@ use Illuminate\Contracts\Config\Repository as ConfigRepository;
 use Illuminate\Contracts\Foundation\Application;
 use InvalidArgumentException;
 use Mockery;
-use PHPUnit\Framework\TestCase;
 use Superbalist\LaravelPubSub\PubSubConnectionFactory;
 use Superbalist\LaravelPubSub\PubSubManager;
 use Superbalist\PubSub\Adapters\DevNullPubSubAdapter;
@@ -14,43 +13,6 @@ use Superbalist\PubSub\PubSubAdapterInterface;
 
 class PubSubManagerTest extends TestCase
 {
-    /**
-     * @return array
-     */
-    protected function getMockPubSubConfig()
-    {
-        return [
-            'default' => '/dev/null',
-            'connections' => [
-                '/dev/null' => [
-                    'driver' => '/dev/null',
-                ],
-                'local' => [
-                    'driver' => 'local',
-                ],
-                'redis' => [
-                    'driver' => 'redis',
-                    'scheme' => 'tcp',
-                    'host' => 'localhost',
-                    'password' => null,
-                    'port' => 6379,
-                    'database' => 0,
-                    'read_write_timeout' => 0,
-                ],
-                'kafka' => [
-                    'driver' => 'kafka',
-                    'brokers' => 'localhost',
-                ],
-                'missing_driver' => [
-
-                ],
-                'custom_connection' => [
-
-                ],
-            ],
-        ];
-    }
-
     public function testConnectionWithNullNameReturnsDefaultConnection()
     {
         $config = Mockery::mock(ConfigRepository::class);
@@ -65,7 +27,7 @@ class PubSubManagerTest extends TestCase
             ->once()
             ->andReturn($config);
 
-        $factory = Mockery::mock(PubSubConnectionFactory::class);
+        $factory = Mockery::mock(PubSubConnectionFactory::class, [$app]);
         $factory->shouldReceive('make')
             ->withArgs([
                 '/dev/null',
@@ -100,7 +62,7 @@ class PubSubManagerTest extends TestCase
             ->once()
             ->andReturn($config);
 
-        $factory = Mockery::mock(PubSubConnectionFactory::class);
+        $factory = Mockery::mock(PubSubConnectionFactory::class, [$app]);
 
         $manager = new PubSubManager($app, $factory);
 
@@ -124,7 +86,7 @@ class PubSubManagerTest extends TestCase
             ->once()
             ->andReturn($config);
 
-        $factory = Mockery::mock(PubSubConnectionFactory::class);
+        $factory = Mockery::mock(PubSubConnectionFactory::class, [$app]);
 
         $manager = new PubSubManager($app, $factory);
 
@@ -145,7 +107,7 @@ class PubSubManagerTest extends TestCase
             ->once()
             ->andReturn($config);
 
-        $factory = Mockery::mock(PubSubConnectionFactory::class);
+        $factory = Mockery::mock(PubSubConnectionFactory::class, [$app]);
         $factory->shouldReceive('make')
             ->withArgs([
                 'kafka',
@@ -181,7 +143,7 @@ class PubSubManagerTest extends TestCase
 
         $adapter = Mockery::mock(DevNullPubSubAdapter::class);
 
-        $factory = Mockery::mock(PubSubConnectionFactory::class);
+        $factory = Mockery::mock(PubSubConnectionFactory::class, [$app]);
         $factory->shouldReceive('make')
             ->withArgs([
                 '/dev/null',
@@ -219,7 +181,7 @@ class PubSubManagerTest extends TestCase
             ->once()
             ->andReturn($config);
 
-        $factory = Mockery::mock(PubSubConnectionFactory::class);
+        $factory = Mockery::mock(PubSubConnectionFactory::class, [$app]);
         $factory->shouldNotReceive('make');
 
         $manager = new PubSubManager($app, $factory);
@@ -252,7 +214,9 @@ class PubSubManagerTest extends TestCase
             ->once()
             ->andReturn($config);
 
-        $manager = new PubSubManager($app, new PubSubConnectionFactory());
+        $factory = Mockery::mock(PubSubConnectionFactory::class, [$app]);
+
+        $manager = new PubSubManager($app, $factory);
 
         $this->assertEquals('/dev/null', $manager->getDefaultConnection());
     }
@@ -273,7 +237,9 @@ class PubSubManagerTest extends TestCase
             ->once()
             ->andReturn($config);
 
-        $manager = new PubSubManager($app, new PubSubConnectionFactory());
+        $factory = Mockery::mock(PubSubConnectionFactory::class, [$app]);
+
+        $manager = new PubSubManager($app, $factory);
 
         $manager->setDefaultConnection('/dev/null');
     }
@@ -282,7 +248,10 @@ class PubSubManagerTest extends TestCase
     {
         $app = Mockery::mock(Application::class);
 
-        $manager = new PubSubManager($app, new PubSubConnectionFactory());
+        $factory = Mockery::mock(PubSubConnectionFactory::class, [$app]);
+
+        $manager = new PubSubManager($app, $factory);
+
         $extensions = $manager->getExtensions();
         $this->assertInternalType('array', $extensions);
 
