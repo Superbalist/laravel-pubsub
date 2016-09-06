@@ -106,18 +106,79 @@ $pubsub->subscribe('channel_name', function ($message) {
 });
 
 // all the aboce commands can also be done using the facade
-PubSub::connection('kafka')->publish('channel-name', 'Hello World!');
+PubSub::connection('kafka')->publish('channel_name', 'Hello World!');
 
 PubSub::connection('kafka')->subscribe('channel_name', function ($message) {
     var_dump($message);
 });
 ```
 
+## Creating a Subscriber
+
+The package includes a helper command `php artisan make:subscriber MyExampleSubscriber` to stub new subscriber command classes.
+
+A lot of pub-sub adapters will contain blocking `subscribe()` calls, so these commands are best run as daemons running
+as a [supervisor](http://supervisord.org) process.
+
+This generator command will create the file `app/Console/Commands/MyExampleSubscriber.php` which will contain:
+```php
+<?php
+
+namespace App\Console\Commands;
+
+use Illuminate\Console\Command;
+use Superbalist\PubSub\PubSubAdapterInterface;
+
+class MyExampleSubscriber extends Command
+{
+    /**
+     * The name and signature of the subscriber command.
+     *
+     * @var string
+     */
+    protected $signature = 'subscriber:name';
+
+    /**
+     * The subscriber description.
+     *
+     * @var string
+     */
+    protected $description = 'PubSub subscriber for ________';
+
+    /**
+     * @var PubSubAdapterInterface
+     */
+    protected $pubsub;
+
+    /**
+     * Create a new command instance.
+     *
+     * @param PubSubAdapterInterface $pubsub
+     */
+    public function __construct(PubSubAdapterInterface $pubsub)
+    {
+        parent::__construct();
+
+        $this->pubsub = $pubsub;
+    }
+
+    /**
+     * Execute the console command.
+     */
+    public function handle()
+    {
+        $this->pubsub->subscribe('channel_name', function ($message) {
+
+        });
+    }
+}
+```
+
 ## Adding a Custom Driver
 
 Please see the [php-pubsub](https://github.com/Superbalist/php-pubsub) documentation  **Writing an Adapter**.
 
-To include your custom driver, you can call the ```extend()``` function.
+To include your custom driver, you can call the `extend()` function.
 
 ```php
 $manager = app('pubsub');
