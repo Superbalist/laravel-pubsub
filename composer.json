@@ -19,12 +19,17 @@
   },
   "autoload": {
     "psr-4": {
-      "Superbalist\\LaravelPubSub\\": "src/"
+      "Superbalist\\LaravelPubSub\\": "src/",
+      "Tests\\": "tests/"
     }
   },
   "extra": {
     "branch-alias": {
       "dev-master": "1.0-dev"
     }
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^5.5",
+    "mockery/mockery": "^0.9.5"
   }
 }

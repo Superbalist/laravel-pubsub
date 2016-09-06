@@ -65,32 +65,11 @@ class PubSubManager
      */
     protected function makeConnection($name)
     {
-        $config = $this->getConfig($name);
+        $config = $this->getConnectionConfig($name);
 
         if (isset($this->extensions[$name])) {
             return call_user_func($this->extensions[$name], $config, $name);
         }
-
-        $driver = $config['driver'];
-        if (isset($this->extensions[$driver])) {
-            return call_user_func($this->extensions[$driver], $config, $name);
-        }
-
-        return $this->factory->make($driver, array_except($config, ['driver']));
-    }
-
-    /**
-     * @param string $name
-     * @return array
-     */
-    protected function getConfig($name)
-    {
-        $connections = $this->app['config']['pubsub.connections'];
-        if (!isset($connections[$name])) {
-            throw new InvalidArgumentException(sprintf('The pub-sub connection [%s] is not configured.', $name));
-        }
-
-        $config = $connections[$name];
 
         if (!isset($config['driver'])) {
             throw new InvalidArgumentException(
@@ -98,7 +77,36 @@ class PubSubManager
             );
         }
 
+        return $this->factory->make($config['driver'], array_except($config, ['driver']));
+    }
+
+    /**
+     * Return the pubsub config for the given connection.
+     *
+     * @param string $name
+     * @return array
+     */
+    protected function getConnectionConfig($name)
+    {
+        $connections = $this->getConfig()['connections'];
+        if (!isset($connections[$name])) {
+            throw new InvalidArgumentException(sprintf('The pub-sub connection [%s] is not configured.', $name));
+        }
+
+        $config = $connections[$name];
+
         return $config;
+    }
+
+    /**
+     * Return the pubsub config array.
+     *
+     * @return array
+     */
+    protected function getConfig()
+    {
+        $config = $this->app->make('config'); /** @var \Illuminate\Contracts\Config\Repository $config */
+        return $config->get('pubsub');
     }
 
     /**
@@ -108,7 +116,7 @@ class PubSubManager
      */
     public function getDefaultConnection()
     {
-        return $this->app['config']['pubsub.default'];
+        return $this->getConfig()['default'];
     }
 
     /**
@@ -118,7 +126,8 @@ class PubSubManager
      */
     public function setDefaultConnection($name)
     {
-        $this->app['config']['pubsub.default'] = $name;
+        $config = $this->app->make('config'); /** @var \Illuminate\Contracts\Config\Repository $config */
+        $config->set('pubsub.default', $name);
     }
 
     /**
@@ -130,6 +139,16 @@ class PubSubManager
     public function extend($name, callable $resolver)
     {
         $this->extensions[$name] = $resolver;
+    }
+
+    /**
+     * Return all registered extension connection resolvers.
+     *
+     * @return array
+     */
+    public function getExtensions()
+    {
+        return $this->extensions;
     }
 
     /**
