@@ -51,7 +51,7 @@ class PubSubConnectionFactoryTest extends TestCase
         $container->shouldReceive('make')
             ->withArgs([
                 'pubsub.redis.redis_client',
-                [$config]
+                ['config' => $config]
             ])
             ->once()
             ->andReturn(Mockery::mock(RedisClient::class));
@@ -132,7 +132,7 @@ class PubSubConnectionFactoryTest extends TestCase
         $container->shouldReceive('make')
             ->withArgs([
                 'pubsub.kafka.consumer',
-                [$conf]
+                ['conf' => $conf]
             ])
             ->once()
             ->andReturn($consumer);
@@ -150,7 +150,7 @@ class PubSubConnectionFactoryTest extends TestCase
             ->withArgs([
                 'pubsub.gcloud.pub_sub_client',
                 [
-                    [
+                    'config' => [
                         'projectId' => 12345,
                         'keyFilePath' => 'my_key_file.json',
                     ]

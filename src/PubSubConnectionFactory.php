@@ -63,7 +63,7 @@ class PubSubConnectionFactory
             $config['read_write_timeout'] = 0;
         }
 
-        $client = $this->container->make('pubsub.redis.redis_client', [$config]);
+        $client = $this->container->make('pubsub.redis.redis_client', ['config' => $config]);
 
         return new RedisPubSubAdapter($client);
     }
@@ -91,7 +91,7 @@ class PubSubConnectionFactory
         $conf->set('offset.store.method', 'broker');
         $conf->setDefaultTopicConf($topicConf);
 
-        $consumer = $this->container->make('pubsub.kafka.consumer', [$conf]);
+        $consumer = $this->container->make('pubsub.kafka.consumer', ['conf' => $conf]);
 
         return new KafkaPubSubAdapter($producer, $consumer);
     }
@@ -108,7 +108,7 @@ class PubSubConnectionFactory
             'projectId' => $config['project_id'],
             'keyFilePath' => $config['key_file'],
         ];
-        $client = $this->container->make('pubsub.gcloud.pub_sub_client', [$clientConfig]);
+        $client = $this->container->make('pubsub.gcloud.pub_sub_client', ['config' => $clientConfig]);
 
         return new GoogleCloudPubSubAdapter($client);
     }
