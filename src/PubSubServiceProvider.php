@@ -59,19 +59,20 @@ class PubSubServiceProvider extends ServiceProvider
             return new GoogleCloudPubSubClient($config);
         });
 
-        $this->app->bind('pubsub.kafka.topic_conf', function ($app) {
+        $this->app->bind('pubsub.kafka.topic_conf', function () {
             return new \RdKafka\TopicConf();
         });
 
-        $this->app->bind('pubsub.kafka.producer', function ($app) {
+        $this->app->bind('pubsub.kafka.producer', function () {
             return new \RdKafka\Producer();
         });
 
-        $this->app->bind('pubsub.kafka.consumer', function ($app) {
-            $conf = new \RdKafka\Conf();
-            $conf->set('group.id', 'php-pubsub');
+        $this->app->bind('pubsub.kafka.conf', function () {
+            return new \RdKafka\Conf();
+        });
 
-            return new \RdKafka\Consumer($conf);
+        $this->app->bind('pubsub.kafka.consumer', function ($app, \RdKafka\Conf $conf) {
+            return new \RdKafka\KafkaConsumer($conf);
         });
     }
 

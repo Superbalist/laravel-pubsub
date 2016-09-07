@@ -76,21 +76,24 @@ class PubSubConnectionFactory
      */
     protected function makeKafkaAdapter(array $config)
     {
-        // use this topic config for both the producer and consumer
-        $topicConf = $this->container->make('pubsub.kafka.topic_conf');
-        $topicConf->set('auto.offset.reset', 'smallest');
-        $topicConf->set('auto.commit.interval.ms', 300);
-
         // create producer
         $producer = $this->container->make('pubsub.kafka.producer');
         $producer->addBrokers($config['brokers']);
 
         // create consumer
-        // see https://arnaud-lb.github.io/php-rdkafka/phpdoc/rdkafka.examples-high-level-consumer.html
-        $consumer = $this->container->make('pubsub.kafka.consumer');
-        $consumer->addBrokers($config['brokers']);
+        $topicConf = $this->container->make('pubsub.kafka.topic_conf');
+        $topicConf->set('auto.offset.reset', 'smallest');
 
-        return new KafkaPubSubAdapter($producer, $consumer, $topicConf);
+        $conf = $this->container->make('pubsub.kafka.conf');
+        $conf->set('group.id', array_get($config, 'consumer_group_id', 'php-pubsub'));
+        $conf->set('metadata.broker.list', $config['brokers']);
+        $conf->set('enable.auto.commit', 'false');
+        $conf->set('offset.store.method', 'broker');
+        $conf->setDefaultTopicConf($topicConf);
+
+        $consumer = $this->container->make('pubsub.kafka.consumer', [$conf]);
+
+        return new KafkaPubSubAdapter($producer, $consumer);
     }
 
     /**
