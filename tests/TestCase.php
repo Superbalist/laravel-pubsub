@@ -29,6 +29,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
                 ],
                 'kafka' => [
                     'driver' => 'kafka',
+                    'consumer_group_id' => 'php-pubsub',
                     'brokers' => 'localhost',
                 ],
                 'missing_driver' => [

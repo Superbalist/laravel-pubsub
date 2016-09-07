@@ -49,6 +49,7 @@ return [
 
         'kafka' => [
             'driver' => 'kafka',
+            'consumer_group_id' => 'php-pubsub',
             'brokers' => env('KAFKA_BROKERS', 'localhost')
         ],
 

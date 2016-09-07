@@ -68,7 +68,22 @@ class PubSubConnectionFactoryTest extends TestCase
             $this->markTestSkipped('KafkaPubSubAdapter is not installed');
         }
 
+        $config = [
+            'consumer_group_id' => 'php-pubsub',
+            'brokers' => 'localhost',
+        ];
+
         $container = Mockery::mock(Container::class);
+
+        $producer = Mockery::mock(\RdKafka\Producer::class);
+        $producer->shouldReceive('addBrokers')
+            ->with('localhost')
+            ->once();
+
+        $container->shouldReceive('make')
+            ->with('pubsub.kafka.producer')
+            ->once()
+            ->andReturn($producer);
 
         $topicConf = Mockery::mock(\RdKafka\TopicConf::class);
         $topicConf->shouldReceive('set');
@@ -78,30 +93,53 @@ class PubSubConnectionFactoryTest extends TestCase
             ->once()
             ->andReturn($topicConf);
 
-        $producer = Mockery::mock(\RdKafka\Producer::class);
-        $producer->shouldReceive('addBrokers')
-            ->with('localhost')
-            ->once()
+        $conf = Mockery::mock(\RdKafka\Conf::class);
+        $conf->shouldReceive('set')
+            ->withArgs([
+                'metadata.broker.list',
+                'localhost'
+            ])
+            ->once();
+        $conf->shouldReceive('set')
+            ->withArgs([
+                'group.id',
+                'php-pubsub'
+            ])
+            ->once();
+        $conf->shouldReceive('set')
+            ->withArgs([
+                'enable.auto.commit',
+                'false'
+            ])
+            ->once();
+        $conf->shouldReceive('set')
+            ->withArgs([
+                'offset.store.method',
+                'broker'
+            ])
+            ->once();
+        $conf->shouldReceive('setDefaultTopicConf')
+            ->with($topicConf)
             ->once();
 
         $container->shouldReceive('make')
-            ->with('pubsub.kafka.producer')
+            ->with('pubsub.kafka.conf')
             ->once()
-            ->andReturn($producer);
+            ->andReturn($conf);
 
-        $consumer = Mockery::mock(\RdKafka\Consumer::class);
-        $consumer->shouldReceive('addBrokers')
-            ->with('localhost')
-            ->once();
+        $consumer = Mockery::mock(\RdKafka\KafkaConsumer::class);
 
         $container->shouldReceive('make')
-            ->with('pubsub.kafka.consumer')
+            ->withArgs([
+                'pubsub.kafka.consumer',
+                [$conf]
+            ])
             ->once()
             ->andReturn($consumer);
 
         $factory = new PubSubConnectionFactory($container);
 
-        $adapter = $factory->make('kafka', ['brokers' => 'localhost']);
+        $adapter = $factory->make('kafka', $config);
         $this->assertInstanceOf(KafkaPubSubAdapter::class, $adapter);
     }
 

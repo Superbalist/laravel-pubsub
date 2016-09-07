@@ -112,6 +112,7 @@ class PubSubManagerTest extends TestCase
             ->withArgs([
                 'kafka',
                 [
+                    'consumer_group_id' => 'php-pubsub',
                     'brokers' => 'localhost',
                 ]
             ])

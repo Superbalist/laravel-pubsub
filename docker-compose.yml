@@ -1,0 +1,8 @@
+version: '2'
+services:
+  laravel-pubsub:
+    build: .
+    volumes:
+      - ./config:/opt/laravel-pubsub/config
+      - ./src:/opt/laravel-pubsub/src
+      - ./tests:/opt/laravel-pubsub/tests
