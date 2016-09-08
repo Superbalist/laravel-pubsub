@@ -174,6 +174,72 @@ class MyExampleSubscriber extends Command
 }
 ```
 
+### Kafka Subscribers ###
+
+For subscribers which use the `php-pubsub-kafka` adapter, you'll likely want to change the `consumer_group_id` per
+subscriber.
+
+To do this, you need to use the `PubSubConnectionFactory` to create a new connection per subscriber.  This is because
+the `consumer_group_id` cannot be changed once a connection is created.
+
+Here is an example of how you can do this:
+
+```php
+<?php
+
+namespace App\Console\Commands;
+
+use Illuminate\Console\Command;
+use Superbalist\LaravelPubSub\PubSubConnectionFactory;
+use Superbalist\PubSub\PubSubAdapterInterface;
+
+class MyExampleKafkaSubscriber extends Command
+{
+    /**
+     * The name and signature of the subscriber command.
+     *
+     * @var string
+     */
+    protected $signature = 'subscriber:name';
+
+    /**
+     * The subscriber description.
+     *
+     * @var string
+     */
+    protected $description = 'PubSub subscriber for ________';
+
+    /**
+     * @var PubSubAdapterInterface
+     */
+    protected $pubsub;
+
+    /**
+     * Create a new command instance.
+     *
+     * @param PubSubConnectionFactory $factory
+     */
+    public function __construct(PubSubConnectionFactory $factory)
+    {
+        parent::__construct();
+
+        $config = config('pubsub.connections.kafka');
+        $config['consumer_group_id'] = self::class;
+        $this->pubsub = $factory->make('kafka', $config);
+    }
+
+    /**
+     * Execute the console command.
+     */
+    public function handle()
+    {
+        $this->pubsub->subscribe('channel_name', function ($message) {
+
+        });
+    }
+}
+```
+
 ## Adding a Custom Driver
 
 Please see the [php-pubsub](https://github.com/Superbalist/php-pubsub) documentation  **Writing an Adapter**.
