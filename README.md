@@ -10,6 +10,8 @@ A Pub-Sub abstraction for Laravel.
 
 This package is a wrapper bridging [php-pubsub](https://github.com/Superbalist/php-pubsub) into Laravel.
 
+For **Laravel 4** support, use the package https://github.com/Superbalist/laravel4-pubsub
+
 The following adapters are supported:
 * Local
 * /dev/null
