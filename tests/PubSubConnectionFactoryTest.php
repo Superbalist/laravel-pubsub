@@ -166,6 +166,12 @@ class PubSubConnectionFactoryTest extends TestCase
         ];
         $adapter = $factory->make('gcloud', $config);
         $this->assertInstanceOf(GoogleCloudPubSubAdapter::class, $adapter);
+
+        $config['auto_create_topics'] = false;
+        $adapter = $factory->make('gcloud', $config); /** @var GoogleCloudPubSubAdapter $adapter */
+        $this->assertInstanceOf(GoogleCloudPubSubAdapter::class, $adapter);
+        $this->assertFalse($adapter->areTopicsAutoCreated());
+        $this->assertTrue($adapter->areSubscriptionsAutoCreated());
     }
 
     public function testMakeInvalidAdapterThrowsInvalidArgumentException()
