@@ -163,13 +163,15 @@ class PubSubConnectionFactoryTest extends TestCase
         $config = [
             'project_id' => '12345',
             'key_file' => 'my_key_file.json',
+            'client_identifier' => 'blah',
+            'auto_create_topics' => false,
         ];
         $adapter = $factory->make('gcloud', $config);
         $this->assertInstanceOf(GoogleCloudPubSubAdapter::class, $adapter);
 
-        $config['auto_create_topics'] = false;
         $adapter = $factory->make('gcloud', $config); /** @var GoogleCloudPubSubAdapter $adapter */
         $this->assertInstanceOf(GoogleCloudPubSubAdapter::class, $adapter);
+        $this->assertEquals('blah', $adapter->getClientIdentifier());
         $this->assertFalse($adapter->areTopicsAutoCreated());
         $this->assertTrue($adapter->areSubscriptionsAutoCreated());
     }

@@ -57,6 +57,7 @@ return [
             'driver' => 'gcloud',
             'project_id' => env('GOOGLE_CLOUD_PROJECT_ID'),
             'key_file' => env('GOOGLE_CLOUD_KEY_FILE'),
+            'client_identifier' => null,
             'auto_create_topics' => true,
             'auto_create_subscriptions' => true,
         ],
