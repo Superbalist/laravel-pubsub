@@ -110,9 +110,10 @@ class PubSubConnectionFactory
         ];
         $client = $this->container->make('pubsub.gcloud.pub_sub_client', ['config' => $clientConfig]);
 
+        $clientIdentifier = array_get($config, 'client_identifier');
         $autoCreateTopics = array_get($config, 'auto_create_topics', true);
         $autoCreateSubscriptions = array_get($config, 'auto_create_subscriptions', true);
 
-        return new GoogleCloudPubSubAdapter($client, $autoCreateTopics, $autoCreateSubscriptions);
+        return new GoogleCloudPubSubAdapter($client, $clientIdentifier, $autoCreateTopics, $autoCreateSubscriptions);
     }
 }
