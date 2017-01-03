@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.1 - 2017-01-03
+
+* Allow for superbalist/php-pubsub-google-cloud ^3.0
+
 ## 2.0.0 - 2016-10-05
 
 * Bump up version ^2.0 of superbalist/php-pubsub-google-cloud
