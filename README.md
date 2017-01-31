@@ -25,6 +25,22 @@ The following adapters are supported:
 composer require superbalist/laravel-pubsub
 ```
 
+Register the service provider in app.php
+```php
+'providers' => [
+    // ...
+    Superbalist\LaravelPubSub\PubSubServiceProvider::class,
+]
+```
+
+Register the facade in app.php
+```php
+'aliases' => [
+    // ...
+    'PubSub' => Superbalist\LaravelPubSub\PubSubFacade::class,
+]
+```
+
 The package has a default configuration which uses the following environment variables.
 ```
 PUBSUB_CONNECTION=redis
@@ -45,22 +61,6 @@ php artisan vendor:publish --provider="Superbalist\LaravelPubSub\PubSubServicePr
 ```
 
 You can then edit the generated config at `app/config/pubsub.php`.
-
-Register the service provider in app.php
-```php
-'providers' => [
-    // ...
-    Superbalist\LaravelPubSub\PubSubServiceProvider::class,
-]
-```
-
-Register the facade in app.php
-```php
-'aliases' => [
-    // ...
-    'PubSub' => Superbalist\LaravelPubSub\PubSubFacade::class,
-]
-```
 
 ## Kafka Adapter Installation
 
