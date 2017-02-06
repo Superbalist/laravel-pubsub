@@ -51,7 +51,7 @@ class PubSubConnectionFactoryTest extends TestCase
         $container->shouldReceive('make')
             ->withArgs([
                 'pubsub.redis.redis_client',
-                ['config' => $config]
+                ['config' => $config],
             ])
             ->once()
             ->andReturn(Mockery::mock(RedisClient::class));
@@ -97,25 +97,25 @@ class PubSubConnectionFactoryTest extends TestCase
         $conf->shouldReceive('set')
             ->withArgs([
                 'metadata.broker.list',
-                'localhost'
+                'localhost',
             ])
             ->once();
         $conf->shouldReceive('set')
             ->withArgs([
                 'group.id',
-                'php-pubsub'
+                'php-pubsub',
             ])
             ->once();
         $conf->shouldReceive('set')
             ->withArgs([
                 'enable.auto.commit',
-                'false'
+                'false',
             ])
             ->once();
         $conf->shouldReceive('set')
             ->withArgs([
                 'offset.store.method',
-                'broker'
+                'broker',
             ])
             ->once();
         $conf->shouldReceive('setDefaultTopicConf')
@@ -132,7 +132,7 @@ class PubSubConnectionFactoryTest extends TestCase
         $container->shouldReceive('make')
             ->withArgs([
                 'pubsub.kafka.consumer',
-                ['conf' => $conf]
+                ['conf' => $conf],
             ])
             ->once()
             ->andReturn($consumer);
@@ -153,8 +153,8 @@ class PubSubConnectionFactoryTest extends TestCase
                     'config' => [
                         'projectId' => 12345,
                         'keyFilePath' => 'my_key_file.json',
-                    ]
-                ]
+                    ],
+                ],
             ])
             ->andReturn(Mockery::mock(GoogleCloudPubSubClient::class));
 
@@ -169,7 +169,7 @@ class PubSubConnectionFactoryTest extends TestCase
         $adapter = $factory->make('gcloud', $config);
         $this->assertInstanceOf(GoogleCloudPubSubAdapter::class, $adapter);
 
-        $adapter = $factory->make('gcloud', $config); /** @var GoogleCloudPubSubAdapter $adapter */
+        $adapter = $factory->make('gcloud', $config); /* @var GoogleCloudPubSubAdapter $adapter */
         $this->assertInstanceOf(GoogleCloudPubSubAdapter::class, $adapter);
         $this->assertEquals('blah', $adapter->getClientIdentifier());
         $this->assertFalse($adapter->areTopicsAutoCreated());
