@@ -31,6 +31,7 @@ class PubSubConnectionFactory
      *
      * @param string $driver
      * @param array $config
+     *
      * @return PubSubAdapterInterface
      */
     public function make($driver, array $config = [])
@@ -55,6 +56,7 @@ class PubSubConnectionFactory
      * Factory a RedisPubSubAdapter.
      *
      * @param array $config
+     *
      * @return RedisPubSubAdapter
      */
     protected function makeRedisAdapter(array $config)
@@ -72,6 +74,7 @@ class PubSubConnectionFactory
      * Factory a KafkaPubSubAdapter.
      *
      * @param array $config
+     *
      * @return KafkaPubSubAdapter
      */
     protected function makeKafkaAdapter(array $config)
@@ -100,6 +103,7 @@ class PubSubConnectionFactory
      * Factory a GoogleCloudPubSubAdapter.
      *
      * @param array $config
+     *
      * @return GoogleCloudPubSubAdapter
      */
     protected function makeGoogleCloudAdapter(array $config)

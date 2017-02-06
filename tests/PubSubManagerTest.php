@@ -31,7 +31,7 @@ class PubSubManagerTest extends TestCase
         $factory->shouldReceive('make')
             ->withArgs([
                 '/dev/null',
-                []
+                [],
             ])
             ->once()
             ->andReturn(PubSubAdapterInterface::class);
@@ -114,7 +114,7 @@ class PubSubManagerTest extends TestCase
                 [
                     'consumer_group_id' => 'php-pubsub',
                     'brokers' => 'localhost',
-                ]
+                ],
             ])
             ->once()
             ->andReturn(PubSubAdapterInterface::class);
@@ -148,7 +148,7 @@ class PubSubManagerTest extends TestCase
         $factory->shouldReceive('make')
             ->withArgs([
                 '/dev/null',
-                []
+                [],
             ])
             ->once()
             ->andReturn($adapter);
@@ -228,7 +228,7 @@ class PubSubManagerTest extends TestCase
         $config->shouldReceive('set')
             ->withArgs([
                 'pubsub.default',
-                '/dev/null'
+                '/dev/null',
             ])
             ->once();
 

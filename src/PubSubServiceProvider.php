@@ -37,7 +37,7 @@ class PubSubServiceProvider extends ServiceProvider
         $this->app->bind('pubsub.connection', PubSubAdapterInterface::class);
 
         $this->app->bind(PubSubAdapterInterface::class, function ($app) {
-            $manager = $app['pubsub']; /** @var PubSubManager $manager */
+            $manager = $app['pubsub']; /* @var PubSubManager $manager */
             return $manager->connection();
         });
 
