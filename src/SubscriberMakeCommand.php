@@ -3,8 +3,8 @@
 namespace Superbalist\LaravelPubSub;
 
 use Illuminate\Console\GeneratorCommand;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
 
 class SubscriberMakeCommand extends GeneratorCommand
 {
@@ -34,6 +34,7 @@ class SubscriberMakeCommand extends GeneratorCommand
      *
      * @param  string  $stub
      * @param  string  $name
+     *
      * @return string
      */
     protected function replaceClass($stub, $name)
@@ -57,11 +58,12 @@ class SubscriberMakeCommand extends GeneratorCommand
      * Get the default namespace for the class.
      *
      * @param  string  $rootNamespace
+     *
      * @return string
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace.'\Console\Commands';
+        return $rootNamespace . '\Console\Commands';
     }
 
     /**
@@ -89,7 +91,7 @@ class SubscriberMakeCommand extends GeneratorCommand
                 null,
                 InputOption::VALUE_OPTIONAL,
                 'The terminal command that should be assigned.',
-                'subscriber:name'
+                'subscriber:name',
             ],
         ];
     }

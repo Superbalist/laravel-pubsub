@@ -4,6 +4,7 @@ A Pub-Sub abstraction for Laravel.
 
 [![Author](http://img.shields.io/badge/author-@superbalist-blue.svg?style=flat-square)](https://twitter.com/superbalist)
 [![Build Status](https://img.shields.io/travis/Superbalist/laravel-pubsub/master.svg?style=flat-square)](https://travis-ci.org/Superbalist/laravel-pubsub)
+[![StyleCI](https://styleci.io/repos/67405993/shield?branch=master)](https://styleci.io/repos/67405993)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
 [![Packagist Version](https://img.shields.io/packagist/v/superbalist/laravel-pubsub.svg?style=flat-square)](https://packagist.org/packages/superbalist/laravel-pubsub)
 [![Total Downloads](https://img.shields.io/packagist/dt/superbalist/laravel-pubsub.svg?style=flat-square)](https://packagist.org/packages/superbalist/laravel-pubsub)
@@ -23,6 +24,22 @@ The following adapters are supported:
 
 ```bash
 composer require superbalist/laravel-pubsub
+```
+
+Register the service provider in app.php
+```php
+'providers' => [
+    // ...
+    Superbalist\LaravelPubSub\PubSubServiceProvider::class,
+]
+```
+
+Register the facade in app.php
+```php
+'aliases' => [
+    // ...
+    'PubSub' => Superbalist\LaravelPubSub\PubSubFacade::class,
+]
 ```
 
 The package has a default configuration which uses the following environment variables.
@@ -45,22 +62,6 @@ php artisan vendor:publish --provider="Superbalist\LaravelPubSub\PubSubServicePr
 ```
 
 You can then edit the generated config at `app/config/pubsub.php`.
-
-Register the service provider in app.php
-```php
-'providers' => [
-    // ...
-    Superbalist\LaravelPubSub\PubSubServiceProvider::class,
-]
-```
-
-Register the facade in app.php
-```php
-'aliases' => [
-    // ...
-    'PubSub' => Superbalist\LaravelPubSub\PubSubFacade::class,
-]
-```
 
 ## Kafka Adapter Installation
 
