@@ -165,6 +165,17 @@ class PubSubManager
     }
 
     /**
+     * Provides the config for a connection.
+     *
+     * @param string|null $name
+     * @return array
+     */
+    public function provideConfigForConnection($name = null)
+    {
+        return $this->getConnectionConfig($name);
+    }
+
+    /**
      * Dynamically pass methods to the default connection.
      *
      * @param string $method
