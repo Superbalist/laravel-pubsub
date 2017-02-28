@@ -42,7 +42,7 @@ class PubSubConnectionFactory
             case 'local':
                 return new LocalPubSubAdapter();
             case 'redis':
-                return $this->makeRedisAdapter($config);
+                return $this->makeRedisAdapter();
             case 'kafka':
                 return $this->makeKafkaAdapter($config);
             case 'gcloud':
@@ -55,18 +55,12 @@ class PubSubConnectionFactory
     /**
      * Factory a RedisPubSubAdapter.
      *
-     * @param array $config
-     *
      * @return RedisPubSubAdapter
      */
-    protected function makeRedisAdapter(array $config)
+    protected function makeRedisAdapter()
     {
-        if (!isset($config['read_write_timeout'])) {
-            $config['read_write_timeout'] = 0;
-        }
-
-        $client = $this->container->make('pubsub.redis.redis_client', ['config' => $config]);
-
+        /** @var \Predis\Client $client */
+        $client = $this->container->make('pubsub.redis.redis_client');
         return new RedisPubSubAdapter($client);
     }
 

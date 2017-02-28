@@ -51,8 +51,15 @@ class PubSubServiceProvider extends ServiceProvider
      */
     protected function registerAdapterDependencies()
     {
-        $this->app->bind('pubsub.redis.redis_client', function ($app, $parameters) {
-            return new RedisClient($parameters['config']);
+        $this->app->bind('pubsub.redis.redis_client', function ($app) {
+            $manager = $app['pubsub']; /* @var PubSubManager $manager */
+            $config = $manager->provideConfigForConnection('redis');
+
+            if (!isset($config['read_write_timeout'])) {
+                $config['read_write_timeout'] = 0;
+            }
+
+            return new RedisClient($config);
         });
 
         $this->app->bind('pubsub.gcloud.pub_sub_client', function ($app, $parameters) {
