@@ -48,7 +48,7 @@ class PubSubConnectionFactoryTest extends TestCase
         ];
 
         $container = Mockery::mock(Container::class);
-        $container->shouldReceive('make')
+        $container->shouldReceive('makeWith')
             ->withArgs([
                 'pubsub.redis.redis_client',
                 ['config' => $config],
@@ -80,7 +80,7 @@ class PubSubConnectionFactoryTest extends TestCase
             ->with('localhost')
             ->once();
 
-        $container->shouldReceive('make')
+        $container->shouldReceive('makeWith')
             ->with('pubsub.kafka.producer')
             ->once()
             ->andReturn($producer);
@@ -88,7 +88,7 @@ class PubSubConnectionFactoryTest extends TestCase
         $topicConf = Mockery::mock(\RdKafka\TopicConf::class);
         $topicConf->shouldReceive('set');
 
-        $container->shouldReceive('make')
+        $container->shouldReceive('makeWith')
             ->with('pubsub.kafka.topic_conf')
             ->once()
             ->andReturn($topicConf);
@@ -146,7 +146,7 @@ class PubSubConnectionFactoryTest extends TestCase
     public function testMakeGoogleCloudAdapter()
     {
         $container = Mockery::mock(Container::class);
-        $container->shouldReceive('make')
+        $container->shouldReceive('makeWith')
             ->withArgs([
                 'pubsub.gcloud.pub_sub_client',
                 [
