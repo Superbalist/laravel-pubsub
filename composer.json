@@ -11,9 +11,9 @@
   "require": {
     "php": ">=5.6.0",
     "illuminate/support": "^5.3",
-    "superbalist/php-pubsub": "^1.0",
-    "superbalist/php-pubsub-redis": "^1.0",
-    "superbalist/php-pubsub-google-cloud": "^2.0|^3.0",
+    "superbalist/php-pubsub": "^1.0|^2.0",
+    "superbalist/php-pubsub-redis": "^1.0|^2.0",
+    "superbalist/php-pubsub-google-cloud": "^2.0|^3.0|^4.0",
     "illuminate/console": "^5.3"
   },
   "autoload": {

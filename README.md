@@ -97,18 +97,24 @@ $pubsub = app(\Superbalist\PubSub\PubSubAdapterInterface::class);
 $pubsub = app('pubsub')->connection('redis');
 
 // publish a message
-// the message can be a string, array, json string, bool, object - anything which can be serialized
+// the message can be a string, array, bool, object - anything which can be json encoded
 $pubsub->publish('channel_name', 'this is where your message goes');
 $pubsub->publish('channel_name', ['key' => 'value']);
-$pubsub->publish('channel_name', '{"key": "value"}');
 $pubsub->publish('channel_name', true);
+
+// publish multiple messages
+$messages = [
+    'message 1',
+    'message 2',
+];
+$pubsub->publishBatch('channel_name', $messages);
 
 // subscribe to a channel
 $pubsub->subscribe('channel_name', function ($message) {
     var_dump($message);
 });
 
-// all the aboce commands can also be done using the facade
+// all the above commands can also be done using the facade
 PubSub::connection('kafka')->publish('channel_name', 'Hello World!');
 
 PubSub::connection('kafka')->subscribe('channel_name', function ($message) {

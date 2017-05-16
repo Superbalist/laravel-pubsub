@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.2 - 2017-05-16
+
+* Allow for superbalist/php-pubsub ^2.0
+* Allow for superbalist/php-pubsub-redis ^2.0
+* Allow for superbalist/php-pubsub-google-cloud ^4.0
+
 ## 2.0.1 - 2017-01-03
 
 * Allow for superbalist/php-pubsub-google-cloud ^3.0
