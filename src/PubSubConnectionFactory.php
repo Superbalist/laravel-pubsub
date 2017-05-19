@@ -65,7 +65,7 @@ class PubSubConnectionFactory
             $config['read_write_timeout'] = 0;
         }
 
-        $client = $this->container->make('pubsub.redis.redis_client', ['config' => $config]);
+        $client = $this->container->makeWith('pubsub.redis.redis_client', ['config' => $config]);
 
         return new RedisPubSubAdapter($client);
     }
@@ -80,21 +80,21 @@ class PubSubConnectionFactory
     protected function makeKafkaAdapter(array $config)
     {
         // create producer
-        $producer = $this->container->make('pubsub.kafka.producer');
+        $producer = $this->container->makeWith('pubsub.kafka.producer');
         $producer->addBrokers($config['brokers']);
 
         // create consumer
-        $topicConf = $this->container->make('pubsub.kafka.topic_conf');
+        $topicConf = $this->container->makeWith('pubsub.kafka.topic_conf');
         $topicConf->set('auto.offset.reset', 'smallest');
 
-        $conf = $this->container->make('pubsub.kafka.conf');
+        $conf = $this->container->makeWith('pubsub.kafka.conf');
         $conf->set('group.id', array_get($config, 'consumer_group_id', 'php-pubsub'));
         $conf->set('metadata.broker.list', $config['brokers']);
         $conf->set('enable.auto.commit', 'false');
         $conf->set('offset.store.method', 'broker');
         $conf->setDefaultTopicConf($topicConf);
 
-        $consumer = $this->container->make('pubsub.kafka.consumer', ['conf' => $conf]);
+        $consumer = $this->container->makeWith('pubsub.kafka.consumer', ['conf' => $conf]);
 
         return new KafkaPubSubAdapter($producer, $consumer);
     }
@@ -112,7 +112,7 @@ class PubSubConnectionFactory
             'projectId' => $config['project_id'],
             'keyFilePath' => $config['key_file'],
         ];
-        $client = $this->container->make('pubsub.gcloud.pub_sub_client', ['config' => $clientConfig]);
+        $client = $this->container->makeWith('pubsub.gcloud.pub_sub_client', ['config' => $clientConfig]);
 
         $clientIdentifier = array_get($config, 'client_identifier');
         $autoCreateTopics = array_get($config, 'auto_create_topics', true);
