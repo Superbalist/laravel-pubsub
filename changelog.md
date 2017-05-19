@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.3 - 2017-05-19
+
+* Bump illuminate/support & illuminate/console to ^5.4
+* Fix compatibility with Laravel 5.4 by switching to makeWith method on container (@mathieutu)
+
 ## 2.0.2 - 2017-05-16
 
 * Allow for superbalist/php-pubsub ^2.0
