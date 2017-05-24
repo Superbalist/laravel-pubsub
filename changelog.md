@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.0.4 - ?
+## 2.0.4 - 2017-05-24
 
 * Add support for HTTP adapter
 
