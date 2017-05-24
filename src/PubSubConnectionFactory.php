@@ -7,6 +7,7 @@ use InvalidArgumentException;
 use Superbalist\PubSub\Adapters\DevNullPubSubAdapter;
 use Superbalist\PubSub\Adapters\LocalPubSubAdapter;
 use Superbalist\PubSub\GoogleCloud\GoogleCloudPubSubAdapter;
+use Superbalist\PubSub\HTTP\HTTPPubSubAdapter;
 use Superbalist\PubSub\Kafka\KafkaPubSubAdapter;
 use Superbalist\PubSub\PubSubAdapterInterface;
 use Superbalist\PubSub\Redis\RedisPubSubAdapter;
@@ -47,6 +48,8 @@ class PubSubConnectionFactory
                 return $this->makeKafkaAdapter($config);
             case 'gcloud':
                 return $this->makeGoogleCloudAdapter($config);
+            case 'http':
+                return $this->makeHTTPAdapter($config);
         }
 
         throw new InvalidArgumentException(sprintf('The driver [%s] is not supported.', $driver));
@@ -119,5 +122,22 @@ class PubSubConnectionFactory
         $autoCreateSubscriptions = array_get($config, 'auto_create_subscriptions', true);
 
         return new GoogleCloudPubSubAdapter($client, $clientIdentifier, $autoCreateTopics, $autoCreateSubscriptions);
+    }
+
+    /**
+     * Factory a HTTPPubSubAdapter.
+     *
+     * @param array $config
+     *
+     * @return HTTPPubSubAdapter
+     */
+    protected function makeHTTPAdapter(array $config)
+    {
+        $client = $this->container->make('pubsub.http.client');
+        $adapter = $this->make(
+            $config['subscribe_connection_config']['driver'],
+            $config['subscribe_connection_config']
+        );
+        return new HTTPPubSubAdapter($client, $config['uri'], $adapter);
     }
 }

@@ -98,6 +98,10 @@ class PubSubManager
 
         $config = $connections[$name];
 
+        if (isset($config['subscribe_connection'])) {
+            $config['subscribe_connection_config'] = $this->getConnectionConfig($config['subscribe_connection']);
+        }
+
         return $config;
     }
 
