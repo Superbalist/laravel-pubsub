@@ -77,7 +77,7 @@ class PubSubServiceProvider extends ServiceProvider
         });
 
         $this->app->bind('pubsub.http.client', function () {
-           return new Client();
+            return new Client();
         });
     }
 
