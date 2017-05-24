@@ -13,6 +13,10 @@ This package is a wrapper bridging [php-pubsub](https://github.com/Superbalist/p
 
 For **Laravel 4** support, use the package https://github.com/Superbalist/laravel4-pubsub
 
+Please note that **Laravel 5.3** is only supported up until version 2.0.2.
+
+2.0.3+ supports **Laravel 5.4 and up** moving forward.
+
 The following adapters are supported:
 * Local
 * /dev/null
