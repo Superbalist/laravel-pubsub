@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.4 - ?
+
+* Add support for HTTP adapter
+
 ## 2.0.3 - 2017-05-19
 
 * Bump illuminate/support & illuminate/console to ^5.4

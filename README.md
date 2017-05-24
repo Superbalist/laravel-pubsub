@@ -23,6 +23,7 @@ The following adapters are supported:
 * Redis
 * Kafka (see separate installation instructions below)
 * Google Cloud
+* HTTP
 
 ## Installation
 
@@ -58,6 +59,9 @@ KAFKA_BROKERS=localhost
 
 GOOGLE_CLOUD_PROJECT_ID=your-project-id-here
 GOOGLE_CLOUD_KEY_FILE=path/to/your/gcloud-key.json
+
+HTTP_PUBSUB_URI=null
+HTTP_PUBSUB_SUBSCRIBE_CONNECTION=redis
 ```
 
 To customize the configuration file, publish the package configuration using Artisan.

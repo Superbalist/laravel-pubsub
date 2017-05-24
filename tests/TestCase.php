@@ -32,6 +32,11 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
                     'consumer_group_id' => 'php-pubsub',
                     'brokers' => 'localhost',
                 ],
+                'http' => [
+                    'driver' => 'http',
+                    'uri' => 'http://127.0.0.1',
+                    'subscribe_connection' => '/dev/null',
+                ],
                 'missing_driver' => [
 
                 ],

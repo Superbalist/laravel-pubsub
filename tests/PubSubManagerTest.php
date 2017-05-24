@@ -199,6 +199,40 @@ class PubSubManagerTest extends TestCase
         $this->assertArrayHasKey('custom_connection', $connections);
     }
 
+    public function testConnectionShouldResolveSubscribeConnectionToSubConfig()
+    {
+        $config = Mockery::mock(ConfigRepository::class);
+        $config->shouldReceive('get')
+            ->with('pubsub')
+            ->once()
+            ->andReturn($this->getMockPubSubConfig());
+
+        $app = Mockery::mock(Application::class);
+        $app->shouldReceive('make')
+            ->with('config')
+            ->once()
+            ->andReturn($config);
+
+        $factory = Mockery::mock(PubSubConnectionFactory::class, [$app]);
+        $factory->shouldReceive('make')
+            ->withArgs([
+                'http',
+                [
+                    'uri' => 'http://127.0.0.1',
+                    'subscribe_connection' => '/dev/null',
+                    'subscribe_connection_config' => [
+                        'driver' => '/dev/null',
+                    ],
+                ],
+            ])
+            ->once()
+            ->andReturn(PubSubAdapterInterface::class);
+
+        $manager = new PubSubManager($app, $factory);
+
+        $manager->connection('http');
+    }
+
     public function testGetDefaultConnection()
     {
         $config = Mockery::mock(ConfigRepository::class);
