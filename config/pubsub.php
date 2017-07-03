@@ -59,6 +59,7 @@ return [
             'client_identifier' => null,
             'auto_create_topics' => true,
             'auto_create_subscriptions' => true,
+            'auth_cache' => null, // eg: \Google\Auth\Cache\MemoryCacheItemPool::class,
         ],
 
         'http' => [
