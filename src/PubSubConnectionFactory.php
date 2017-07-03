@@ -115,6 +115,10 @@ class PubSubConnectionFactory
             'projectId' => $config['project_id'],
             'keyFilePath' => $config['key_file'],
         ];
+        if (isset($config['auth_cache'])) {
+            $clientConfig['authCache'] = $this->container->make($config['auth_cache']);
+        }
+
         $client = $this->container->makeWith('pubsub.gcloud.pub_sub_client', ['config' => $clientConfig]);
 
         $clientIdentifier = array_get($config, 'client_identifier');

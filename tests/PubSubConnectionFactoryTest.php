@@ -8,6 +8,7 @@ use Illuminate\Contracts\Container\Container;
 use InvalidArgumentException;
 use Mockery;
 use Predis\Client as RedisClient;
+use Psr\Cache\CacheItemPoolInterface;
 use Superbalist\LaravelPubSub\PubSubConnectionFactory;
 use Superbalist\PubSub\Adapters\DevNullPubSubAdapter;
 use Superbalist\PubSub\Adapters\LocalPubSubAdapter;
@@ -177,6 +178,39 @@ class PubSubConnectionFactoryTest extends TestCase
         $this->assertEquals('blah', $adapter->getClientIdentifier());
         $this->assertFalse($adapter->areTopicsAutoCreated());
         $this->assertTrue($adapter->areSubscriptionsAutoCreated());
+    }
+
+    public function testMakeGoogleCloudAdapterWithAuthCache()
+    {
+        $cacheImplementation = Mockery::mock(CacheItemPoolInterface::class);
+
+        $container = Mockery::mock(Container::class);
+        $container->shouldReceive('make')
+            ->with('MyPSR6CacheImplementation::class')
+            ->andReturn($cacheImplementation);
+        $container->shouldReceive('makeWith')
+            ->withArgs([
+                'pubsub.gcloud.pub_sub_client',
+                [
+                    'config' => [
+                        'projectId' => 12345,
+                        'keyFilePath' => 'my_key_file.json',
+                        'authCache' => $cacheImplementation,
+                    ],
+                ],
+            ])
+            ->andReturn(Mockery::mock(GoogleCloudPubSubClient::class));
+
+        $factory = new PubSubConnectionFactory($container);
+
+        $config = [
+            'project_id' => '12345',
+            'key_file' => 'my_key_file.json',
+            'auth_cache' => 'MyPSR6CacheImplementation::class',
+        ];
+
+        $adapter = $factory->make('gcloud', $config);
+        $this->assertInstanceOf(GoogleCloudPubSubAdapter::class, $adapter);
     }
 
     public function testMakeHTTPAdapter()
