@@ -60,6 +60,8 @@ return [
             'auto_create_topics' => true,
             'auto_create_subscriptions' => true,
             'auth_cache' => null, // eg: \Google\Auth\Cache\MemoryCacheItemPool::class,
+            'background_batching' => false,
+            'background_daemon' => false,
         ],
 
         'http' => [

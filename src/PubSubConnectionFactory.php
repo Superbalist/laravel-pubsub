@@ -124,8 +124,19 @@ class PubSubConnectionFactory
         $clientIdentifier = array_get($config, 'client_identifier');
         $autoCreateTopics = array_get($config, 'auto_create_topics', true);
         $autoCreateSubscriptions = array_get($config, 'auto_create_subscriptions', true);
+        $backgroundBatching = array_get($config, 'background_batching', false);
+        $backgroundDaemon = array_get($config, 'background_daemon', false);
 
-        return new GoogleCloudPubSubAdapter($client, $clientIdentifier, $autoCreateTopics, $autoCreateSubscriptions);
+        if ($backgroundDaemon) {
+            putenv('IS_BATCH_DAEMON_RUNNING=true');
+        }
+        return new GoogleCloudPubSubAdapter(
+            $client,
+            $clientIdentifier,
+            $autoCreateTopics,
+            $autoCreateSubscriptions,
+            $backgroundBatching
+        );
     }
 
     /**

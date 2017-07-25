@@ -3,6 +3,7 @@
 ## 3.0.0 - 2017-07-25
 
 * Bump up to superbalist/php-pubsub-google-cloud ^5.0 which allows for background daemon support
+* Add new background_batching and background_daemon options to Google Cloud adapter
 
 ## 2.0.5 - 2017-07-03
 

@@ -169,6 +169,8 @@ class PubSubConnectionFactoryTest extends TestCase
             'key_file' => 'my_key_file.json',
             'client_identifier' => 'blah',
             'auto_create_topics' => false,
+            'background_batching' => true,
+            'background_daemon' => false,
         ];
         $adapter = $factory->make('gcloud', $config);
         $this->assertInstanceOf(GoogleCloudPubSubAdapter::class, $adapter);
@@ -178,6 +180,45 @@ class PubSubConnectionFactoryTest extends TestCase
         $this->assertEquals('blah', $adapter->getClientIdentifier());
         $this->assertFalse($adapter->areTopicsAutoCreated());
         $this->assertTrue($adapter->areSubscriptionsAutoCreated());
+        $this->assertTrue($adapter->isBackgroundBatchingEnabled());
+        $this->assertFalse(getenv('IS_BATCH_DAEMON_RUNNING'));
+    }
+
+    public function testMakeGoogleCloudAdapterWithBackgroundBatchingAndDaemonEnabled()
+    {
+        $container = Mockery::mock(Container::class);
+        $container->shouldReceive('makeWith')
+            ->withArgs([
+                'pubsub.gcloud.pub_sub_client',
+                [
+                    'config' => [
+                        'projectId' => 12345,
+                        'keyFilePath' => 'my_key_file.json',
+                    ],
+                ],
+            ])
+            ->andReturn(Mockery::mock(GoogleCloudPubSubClient::class));
+
+        $factory = new PubSubConnectionFactory($container);
+
+        $config = [
+            'project_id' => '12345',
+            'key_file' => 'my_key_file.json',
+            'client_identifier' => 'blah',
+            'auto_create_topics' => false,
+            'background_batching' => true,
+            'background_daemon' => true,
+        ];
+        $adapter = $factory->make('gcloud', $config);
+        $this->assertInstanceOf(GoogleCloudPubSubAdapter::class, $adapter);
+
+        $adapter = $factory->make('gcloud', $config); /* @var GoogleCloudPubSubAdapter $adapter */
+        $this->assertInstanceOf(GoogleCloudPubSubAdapter::class, $adapter);
+        $this->assertEquals('blah', $adapter->getClientIdentifier());
+        $this->assertFalse($adapter->areTopicsAutoCreated());
+        $this->assertTrue($adapter->areSubscriptionsAutoCreated());
+        $this->assertTrue($adapter->isBackgroundBatchingEnabled());
+        $this->assertEquals('true', getenv('IS_BATCH_DAEMON_RUNNING'));
     }
 
     public function testMakeGoogleCloudAdapterWithAuthCache()
