@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.0.0 - 2017-07-25
+
+* Bump up to superbalist/php-pubsub-google-cloud ^5.0 which allows for background daemon support
+
 ## 2.0.5 - 2017-07-03
 
 * Add support for using a custom auth cache with the Google Cloud adapter
