@@ -83,14 +83,14 @@ class PubSubConnectionFactory
     protected function makeKafkaAdapter(array $config)
     {
         // create producer
-        $producer = $this->container->makeWith('pubsub.kafka.producer');
+        $producer = $this->container->makeWith('pubsub.kafka.producer', []);
         $producer->addBrokers($config['brokers']);
 
         // create consumer
-        $topicConf = $this->container->makeWith('pubsub.kafka.topic_conf');
+        $topicConf = $this->container->makeWith('pubsub.kafka.topic_conf', []);
         $topicConf->set('auto.offset.reset', 'smallest');
 
-        $conf = $this->container->makeWith('pubsub.kafka.conf');
+        $conf = $this->container->makeWith('pubsub.kafka.conf', []);
         $conf->set('group.id', array_get($config, 'consumer_group_id', 'php-pubsub'));
         $conf->set('metadata.broker.list', $config['brokers']);
         $conf->set('enable.auto.commit', 'false');
