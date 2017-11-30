@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.0.1 - 2017-12-01
+
+* Added Lumen support
+
 ## 3.0.0 - 2017-07-25
 
 * Bump up to superbalist/php-pubsub-google-cloud ^5.0 which allows for background daemon support

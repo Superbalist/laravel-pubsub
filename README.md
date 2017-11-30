@@ -1,6 +1,6 @@
 # laravel-pubsub
 
-A Pub-Sub abstraction for Laravel.
+A Pub-Sub abstraction for Laravel and Lumen.
 
 [![Author](http://img.shields.io/badge/author-@superbalist-blue.svg?style=flat-square)](https://twitter.com/superbalist)
 [![Build Status](https://img.shields.io/travis/Superbalist/laravel-pubsub/master.svg?style=flat-square)](https://travis-ci.org/Superbalist/laravel-pubsub)
@@ -9,13 +9,15 @@ A Pub-Sub abstraction for Laravel.
 [![Packagist Version](https://img.shields.io/packagist/v/superbalist/laravel-pubsub.svg?style=flat-square)](https://packagist.org/packages/superbalist/laravel-pubsub)
 [![Total Downloads](https://img.shields.io/packagist/dt/superbalist/laravel-pubsub.svg?style=flat-square)](https://packagist.org/packages/superbalist/laravel-pubsub)
 
-This package is a wrapper bridging [php-pubsub](https://github.com/Superbalist/php-pubsub) into Laravel.
+This package is a wrapper bridging [php-pubsub](https://github.com/Superbalist/php-pubsub) into Laravel and Lumen.
 
 For **Laravel 4** support, use the package https://github.com/Superbalist/laravel4-pubsub
 
 Please note that **Laravel 5.3** is only supported up until version 2.0.2.
 
 2.0.3+ supports **Laravel 5.4 and up** moving forward.
+
+3.0.1+ supports **Lumen 5.5 and up** moving forward.
 
 The following adapters are supported:
 * Local
@@ -25,7 +27,7 @@ The following adapters are supported:
 * Google Cloud
 * HTTP
 
-## Installation
+## Laravel Installation
 
 ```bash
 composer require superbalist/laravel-pubsub
@@ -35,7 +37,7 @@ Register the service provider in app.php
 ```php
 'providers' => [
     // ...
-    Superbalist\LaravelPubSub\PubSubServiceProvider::class,
+    Superbalist\LaravelPubSub\PubSubLaravelServiceProvider::class,
 ]
 ```
 
@@ -46,6 +48,40 @@ Register the facade in app.php
     'PubSub' => Superbalist\LaravelPubSub\PubSubFacade::class,
 ]
 ```
+
+To customize the configuration file, publish the package configuration using Artisan.
+```bash
+php artisan vendor:publish --provider="Superbalist\LaravelPubSub\PubSubLaravelServiceProvider"
+```
+
+You can then edit the generated config at `app/config/pubsub.php`.
+
+## Lumen Installation
+
+```bash
+composer require superbalist/laravel-pubsub
+```
+
+Register the service provider in app.php
+```php
+$app->register(Superbalist\LaravelPubSub\PubSubLumenServiceProvider::class);
+```
+
+Register the facade in app.php
+```php
+if (!class_exists('PubSub')) {
+    class_alias('Superbalist\LaravelPubSub\PubSubFacade', 'PubSub');
+}
+```
+
+To customize the configuration file, copy the package configuration.
+```bash
+cp vendor/superbalist/laravel-pubsub/config/pubsub.php config/pubsub.php
+```
+
+You can then edit the generated config at `config/pubsub.php`.
+
+## Configuration
 
 The package has a default configuration which uses the following environment variables.
 ```
@@ -64,12 +100,7 @@ HTTP_PUBSUB_URI=null
 HTTP_PUBSUB_SUBSCRIBE_CONNECTION=redis
 ```
 
-To customize the configuration file, publish the package configuration using Artisan.
-```bash
-php artisan vendor:publish --provider="Superbalist\LaravelPubSub\PubSubServiceProvider"
-```
 
-You can then edit the generated config at `app/config/pubsub.php`.
 
 ## Kafka Adapter Installation
 
