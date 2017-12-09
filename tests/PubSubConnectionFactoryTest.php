@@ -126,14 +126,14 @@ class PubSubConnectionFactoryTest extends TestCase
             ->with($topicConf)
             ->once();
 
-        $container->shouldReceive('make')
+        $container->shouldReceive('makeWith')
             ->with('pubsub.kafka.conf')
             ->once()
             ->andReturn($conf);
 
         $consumer = Mockery::mock(\RdKafka\KafkaConsumer::class);
 
-        $container->shouldReceive('make')
+        $container->shouldReceive('makeWith')
             ->withArgs([
                 'pubsub.kafka.consumer',
                 ['conf' => $conf],
