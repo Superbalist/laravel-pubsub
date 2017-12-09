@@ -273,3 +273,18 @@ $manager->extend('custom_connection_name', function ($config) {
 // get an instance of your custom connection
 $pubsub = $manager->connection('custom_connection_name');
 ```
+
+## Contributing
+
+### Running Tests
+
+Run `composer install` to ensure local installation of dependencies.
+
+Run `make tests` to run test suite.
+
+If you need to run Kafka tests, install the Kafka bridge (note you still need to install the C library and PHP extension
+separately):
+
+```bash
+composer require superbalist/php-pubsub-kafka
+```
