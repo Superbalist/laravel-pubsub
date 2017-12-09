@@ -273,3 +273,11 @@ $manager->extend('custom_connection_name', function ($config) {
 // get an instance of your custom connection
 $pubsub = $manager->connection('custom_connection_name');
 ```
+
+## Contributing
+
+### Running Tests
+
+Run `composer install` to ensure local installation of dependencies.
+
+Run `make tests` to run test suite.
