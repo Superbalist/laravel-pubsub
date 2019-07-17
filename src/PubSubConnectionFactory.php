@@ -95,6 +95,16 @@ class PubSubConnectionFactory
         $conf->set('metadata.broker.list', $config['brokers']);
         $conf->set('enable.auto.commit', 'false');
         $conf->set('offset.store.method', 'broker');
+
+//        $conf->set('request.timeout.ms', '20000');
+//        $conf->set('retry.backoff.ms', '500');
+        if (array_key_exists('sasl_username', $config)) {
+            $conf->set('sasl.username', array_get($config, 'sasl_username'));
+            $conf->set('sasl.password', array_get($config, 'sasl_password'));
+            $conf->set('sasl.mechanisms', array_get($config, 'sasl_mechanisms','PLAIN'));
+            $conf->set('security.protocol', array_get($config, 'sasl_protocol','SASL_SSL'));
+        }
+
         $conf->setDefaultTopicConf($topicConf);
 
         $consumer = $this->container->makeWith('pubsub.kafka.consumer', ['conf' => $conf]);
