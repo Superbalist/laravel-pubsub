@@ -96,13 +96,20 @@ class PubSubConnectionFactory
         $conf->set('enable.auto.commit', 'false');
         $conf->set('offset.store.method', 'broker');
 
-//        $conf->set('request.timeout.ms', '20000');
-//        $conf->set('retry.backoff.ms', '500');
-        if (array_key_exists('sasl_username', $config)) {
-            $conf->set('sasl.username', array_get($config, 'sasl_username'));
-            $conf->set('sasl.password', array_get($config, 'sasl_password'));
-            $conf->set('sasl.mechanisms', array_get($config, 'sasl_mechanisms','PLAIN'));
-            $conf->set('security.protocol', array_get($config, 'sasl_protocol','SASL_SSL'));
+        // set security options if required
+        if (array_key_exists('security_protocol', $config)) {
+            switch ($config['security_protocol']) {
+                case 'SASL_SSL':
+                case 'SASL_PAINTEXT':
+                    $conf->set('security.protocol', array_get($config, 'security_protocol','SASL_SSL'));
+                    $conf->set('sasl.username', array_get($config, 'sasl_username'));
+                    $conf->set('sasl.password', array_get($config, 'sasl_password'));
+                    $conf->set('sasl.mechanisms', array_get($config, 'sasl_mechanisms','PLAIN'));
+                    break;
+                
+                default:
+                    break;
+            }
         }
 
         $conf->setDefaultTopicConf($topicConf);
