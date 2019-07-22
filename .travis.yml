@@ -4,7 +4,15 @@ php:
   - 5.6
   - 7.0
   - 7.1
+  - 7.2
+  - 7.3
+  - hhvm
   - nightly
+
+matrix:
+    allow_failures:
+        - php: hhvm
+        - php: nightly
 
 before_script:
   - composer install
