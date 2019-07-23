@@ -1,5 +1,5 @@
 {
-  "name": "superbalist/laravel-pubsub",
+  "name": "entanet/laravel-pubsub",
   "description": "A Pub-Sub abstraction for Laravel",
   "license": "MIT",
   "authors": [

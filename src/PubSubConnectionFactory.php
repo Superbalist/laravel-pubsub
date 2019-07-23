@@ -82,21 +82,39 @@ class PubSubConnectionFactory
      */
     protected function makeKafkaAdapter(array $config)
     {
-        // create producer
-        $producer = $this->container->makeWith('pubsub.kafka.producer');
-        $producer->addBrokers($config['brokers']);
-
-        // create consumer
+        // create default topic
         $topicConf = $this->container->makeWith('pubsub.kafka.topic_conf');
         $topicConf->set('auto.offset.reset', 'smallest');
 
+        // create config
         $conf = $this->container->makeWith('pubsub.kafka.conf');
         $conf->set('group.id', array_get($config, 'consumer_group_id', 'php-pubsub'));
         $conf->set('metadata.broker.list', $config['brokers']);
         $conf->set('enable.auto.commit', 'false');
         $conf->set('offset.store.method', 'broker');
+
+        if (array_key_exists('security_protocol', $config)) {
+            switch ($config['security_protocol']) {
+                case 'SASL_SSL':
+                case 'SASL_PAINTEXT':
+                    $conf->set('security.protocol', array_get($config, 'security_protocol', 'SASL_SSL'));
+                    $conf->set('sasl.username', array_get($config, 'sasl_username', 'sasl_username'));
+                    $conf->set('sasl.password', array_get($config, 'sasl_password', 'sasl_password'));
+                    $conf->set('sasl.mechanisms', array_get($config, 'sasl_mechanisms', 'PLAIN'));
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
         $conf->setDefaultTopicConf($topicConf);
 
+        // create producer
+        $producer = $this->container->makeWith('pubsub.kafka.producer', ['conf' => $conf]);
+        $producer->addBrokers($config['brokers']);
+
+        // create consumer
         $consumer = $this->container->makeWith('pubsub.kafka.consumer', ['conf' => $conf]);
 
         return new KafkaPubSubAdapter($producer, $consumer);
