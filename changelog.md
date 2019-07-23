@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.1.0 - 2019-07-23
+
+* Add support for SASL authentication
+
 ## 3.0.0 - 2017-07-25
 
 * Bump up to superbalist/php-pubsub-google-cloud ^5.0 which allows for background daemon support
