@@ -58,6 +58,8 @@ REDIS_PASSWORD=null
 REDIS_PORT=6379
 
 KAFKA_BROKERS=localhost
+KAFKA_SASL_USERNAME=kafka-sasl-username
+KAFKA_SASL_PASSWORD=kafks-sasl-password
 
 GOOGLE_CLOUD_PROJECT_ID=your-project-id-here
 GOOGLE_CLOUD_KEY_FILE=path/to/your/gcloud-key.json
