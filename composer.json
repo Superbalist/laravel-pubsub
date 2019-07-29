@@ -8,6 +8,9 @@
       "email": "info@superbalist.com"
     }
   ],
+  "conflict": {
+    "superbalist/laravel-pubsub": "*"
+  },
   "require": {
     "php": ">=5.6.0",
     "illuminate/support": "^5.4",
