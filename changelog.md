@@ -1,6 +1,6 @@
 # Changelog
 
-## 3.1.1 - 2019-09-24
+## 3.2.0 - 2019-09-24
 
 * Allow enabling SASL by setting KAFKA_SECURITY_PROTOCOL env variable
 
