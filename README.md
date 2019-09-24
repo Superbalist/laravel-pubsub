@@ -58,6 +58,7 @@ REDIS_PASSWORD=null
 REDIS_PORT=6379
 
 KAFKA_BROKERS=localhost
+KAFKA_SECURITY_PROTOCOL=kafka-security-protocol
 KAFKA_SASL_USERNAME=kafka-sasl-username
 KAFKA_SASL_PASSWORD=kafks-sasl-password
 
@@ -67,6 +68,8 @@ GOOGLE_CLOUD_KEY_FILE=path/to/your/gcloud-key.json
 HTTP_PUBSUB_URI=null
 HTTP_PUBSUB_SUBSCRIBE_CONNECTION=redis
 ```
+
+If the KAFKA_SECURITY_PROTOCOL is set to either "SASL_SSL" or "SASL_PLAINTEXT", the credentials stored in KAFKA_SASL_USERNAME & KAFKA_SASL_PASSWORD will be used to authenticate with the kafka server / cluster.
 
 To customize the configuration file, publish the package configuration using Artisan.
 ```bash
