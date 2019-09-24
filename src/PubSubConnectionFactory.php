@@ -93,10 +93,12 @@ class PubSubConnectionFactory
         $conf->set('enable.auto.commit', 'false');
         $conf->set('offset.store.method', 'broker');
 
-        if (array_key_exists('security_protocol', $config)) {
+        if (array_key_exists('security_protocol', $config)
+            && $config['security_protocol'] != ''
+        ) {
             switch ($config['security_protocol']) {
                 case 'SASL_SSL':
-                case 'SASL_PAINTEXT':
+                case 'SASL_PLAINTEXT':
                     $conf->set('security.protocol', array_get($config, 'security_protocol', 'SASL_SSL'));
                     $conf->set('sasl.username', array_get($config, 'sasl_username', 'sasl_username'));
                     $conf->set('sasl.password', array_get($config, 'sasl_password', 'sasl_password'));
