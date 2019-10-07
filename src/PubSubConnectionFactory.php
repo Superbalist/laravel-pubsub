@@ -110,8 +110,6 @@ class PubSubConnectionFactory
             }
         }
 
-        $conf->setDefaultTopicConf($topicConf);
-
         // create producer
         $producer = $this->container->makeWith('pubsub.kafka.producer', ['conf' => $conf]);
         $producer->addBrokers($config['brokers']);
