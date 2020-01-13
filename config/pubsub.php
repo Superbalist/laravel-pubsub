@@ -48,8 +48,11 @@ return [
 
         'kafka' => [
             'driver' => 'kafka',
-            'consumer_group_id' => 'php-pubsub',
+            'consumer_group_id' => env('KAFKA_CONSUMER_ID', 'php-pubsub'),
             'brokers' => env('KAFKA_BROKERS', 'localhost'),
+            'security_protocol' => env('KAFKA_SECURITY_PROTOCOL'),
+            'sasl_username' => env('KAFKA_SASL_USERNAME'),
+            'sasl_password' => env('KAFKA_SASL_PASSWORD'),
         ],
 
         'gcloud' => [

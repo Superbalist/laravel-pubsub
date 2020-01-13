@@ -3,6 +3,7 @@
 namespace Superbalist\LaravelPubSub;
 
 use Illuminate\Contracts\Container\Container;
+use Illuminate\Support\Arr;
 use InvalidArgumentException;
 use Superbalist\PubSub\Adapters\DevNullPubSubAdapter;
 use Superbalist\PubSub\Adapters\LocalPubSubAdapter;
@@ -82,21 +83,39 @@ class PubSubConnectionFactory
      */
     protected function makeKafkaAdapter(array $config)
     {
-        // create producer
-        $producer = $this->container->makeWith('pubsub.kafka.producer');
-        $producer->addBrokers($config['brokers']);
-
-        // create consumer
+        // create default topic
         $topicConf = $this->container->makeWith('pubsub.kafka.topic_conf');
         $topicConf->set('auto.offset.reset', 'smallest');
 
+        // create config
         $conf = $this->container->makeWith('pubsub.kafka.conf');
-        $conf->set('group.id', array_get($config, 'consumer_group_id', 'php-pubsub'));
+        $conf->set('group.id', Arr::get($config, 'consumer_group_id', 'php-pubsub'));
         $conf->set('metadata.broker.list', $config['brokers']);
         $conf->set('enable.auto.commit', 'false');
         $conf->set('offset.store.method', 'broker');
-        $conf->setDefaultTopicConf($topicConf);
 
+        if (array_key_exists('security_protocol', $config)
+            && $config['security_protocol'] != ''
+        ) {
+            switch ($config['security_protocol']) {
+                case 'SASL_SSL':
+                case 'SASL_PLAINTEXT':
+                    $conf->set('security.protocol', Arr::get($config, 'security_protocol', 'SASL_SSL'));
+                    $conf->set('sasl.username', Arr::get($config, 'sasl_username', 'sasl_username'));
+                    $conf->set('sasl.password', Arr::get($config, 'sasl_password', 'sasl_password'));
+                    $conf->set('sasl.mechanisms', Arr::get($config, 'sasl_mechanisms', 'PLAIN'));
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        // create producer
+        $producer = $this->container->makeWith('pubsub.kafka.producer', ['conf' => $conf]);
+        $producer->addBrokers($config['brokers']);
+
+        // create consumer
         $consumer = $this->container->makeWith('pubsub.kafka.consumer', ['conf' => $conf]);
 
         return new KafkaPubSubAdapter($producer, $consumer);
@@ -121,11 +140,11 @@ class PubSubConnectionFactory
 
         $client = $this->container->makeWith('pubsub.gcloud.pub_sub_client', ['config' => $clientConfig]);
 
-        $clientIdentifier = array_get($config, 'client_identifier');
-        $autoCreateTopics = array_get($config, 'auto_create_topics', true);
-        $autoCreateSubscriptions = array_get($config, 'auto_create_subscriptions', true);
-        $backgroundBatching = array_get($config, 'background_batching', false);
-        $backgroundDaemon = array_get($config, 'background_daemon', false);
+        $clientIdentifier = Arr::get($config, 'client_identifier');
+        $autoCreateTopics = Arr::get($config, 'auto_create_topics', true);
+        $autoCreateSubscriptions = Arr::get($config, 'auto_create_subscriptions', true);
+        $backgroundBatching = Arr::get($config, 'background_batching', false);
+        $backgroundDaemon = Arr::get($config, 'background_daemon', false);
 
         if ($backgroundDaemon) {
             putenv('IS_BATCH_DAEMON_RUNNING=true');

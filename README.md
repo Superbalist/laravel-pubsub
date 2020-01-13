@@ -1,13 +1,15 @@
 # laravel-pubsub
 
 A Pub-Sub abstraction for Laravel.
+_forked from Superbalist/laravel-pubsub_
+
 
 [![Author](http://img.shields.io/badge/author-@superbalist-blue.svg?style=flat-square)](https://twitter.com/superbalist)
-[![Build Status](https://img.shields.io/travis/Superbalist/laravel-pubsub/master.svg?style=flat-square)](https://travis-ci.org/Superbalist/laravel-pubsub)
+[![Build Status](https://img.shields.io/travis/Entanet/laravel-pubsub/master.svg?style=flat-square)](https://travis-ci.org/Entanet/laravel-pubsub)
 [![StyleCI](https://styleci.io/repos/67405993/shield?branch=master)](https://styleci.io/repos/67405993)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
-[![Packagist Version](https://img.shields.io/packagist/v/superbalist/laravel-pubsub.svg?style=flat-square)](https://packagist.org/packages/superbalist/laravel-pubsub)
-[![Total Downloads](https://img.shields.io/packagist/dt/superbalist/laravel-pubsub.svg?style=flat-square)](https://packagist.org/packages/superbalist/laravel-pubsub)
+[![Packagist Version](https://img.shields.io/packagist/v/entanet/laravel-pubsub.svg?style=flat-square)](https://packagist.org/packages/entanet/laravel-pubsub)
+[![Total Downloads](https://img.shields.io/packagist/dt/entanet/laravel-pubsub.svg?style=flat-square)](https://packagist.org/packages/entanet/laravel-pubsub)
 
 This package is a wrapper bridging [php-pubsub](https://github.com/Superbalist/php-pubsub) into Laravel.
 
@@ -28,7 +30,7 @@ The following adapters are supported:
 ## Installation
 
 ```bash
-composer require superbalist/laravel-pubsub
+composer require entanet/laravel-pubsub
 ```
 
 Register the service provider in app.php
@@ -56,6 +58,9 @@ REDIS_PASSWORD=null
 REDIS_PORT=6379
 
 KAFKA_BROKERS=localhost
+KAFKA_SECURITY_PROTOCOL=kafka-security-protocol
+KAFKA_SASL_USERNAME=kafka-sasl-username
+KAFKA_SASL_PASSWORD=kafks-sasl-password
 
 GOOGLE_CLOUD_PROJECT_ID=your-project-id-here
 GOOGLE_CLOUD_KEY_FILE=path/to/your/gcloud-key.json
@@ -63,6 +68,8 @@ GOOGLE_CLOUD_KEY_FILE=path/to/your/gcloud-key.json
 HTTP_PUBSUB_URI=null
 HTTP_PUBSUB_SUBSCRIBE_CONNECTION=redis
 ```
+
+If the KAFKA_SECURITY_PROTOCOL is set to either "SASL_SSL" or "SASL_PLAINTEXT", the credentials stored in KAFKA_SASL_USERNAME & KAFKA_SASL_PASSWORD will be used to authenticate with the kafka server / cluster.
 
 To customize the configuration file, publish the package configuration using Artisan.
 ```bash

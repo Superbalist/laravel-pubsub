@@ -3,6 +3,7 @@
 namespace Superbalist\LaravelPubSub;
 
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Support\Arr;
 use InvalidArgumentException;
 use Superbalist\PubSub\PubSubAdapterInterface;
 
@@ -79,7 +80,7 @@ class PubSubManager
             );
         }
 
-        return $this->factory->make($config['driver'], array_except($config, ['driver']));
+        return $this->factory->make($config['driver'], Arr::except($config, ['driver']));
     }
 
     /**

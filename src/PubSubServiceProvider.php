@@ -64,8 +64,8 @@ class PubSubServiceProvider extends ServiceProvider
             return new \RdKafka\TopicConf();
         });
 
-        $this->app->bind('pubsub.kafka.producer', function () {
-            return new \RdKafka\Producer();
+        $this->app->bind('pubsub.kafka.producer', function ($app, $parameters) {
+            return new \RdKafka\Producer($parameters['conf']);
         });
 
         $this->app->bind('pubsub.kafka.conf', function () {
