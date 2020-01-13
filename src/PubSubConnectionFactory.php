@@ -3,6 +3,7 @@
 namespace Superbalist\LaravelPubSub;
 
 use Illuminate\Contracts\Container\Container;
+use Illuminate\Support\Arr;
 use InvalidArgumentException;
 use Superbalist\PubSub\Adapters\DevNullPubSubAdapter;
 use Superbalist\PubSub\Adapters\LocalPubSubAdapter;
