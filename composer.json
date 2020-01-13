@@ -12,12 +12,12 @@
     "superbalist/laravel-pubsub": "*"
   },
   "require": {
-    "php": ">=5.6.0",
-    "illuminate/support": "^5.4",
+    "php": ">=7.2.0",
+    "illuminate/support": "^6",
     "superbalist/php-pubsub": "^1.0|^2.0",
     "superbalist/php-pubsub-redis": "^1.0|^2.0",
     "superbalist/php-pubsub-google-cloud": "^5.0",
-    "illuminate/console": "^5.4",
+    "illuminate/console": "^6",
     "superbalist/php-pubsub-http": "^1.0"
   },
   "autoload": {
