@@ -79,7 +79,7 @@ class PubSubManager
             );
         }
 
-        return $this->factory->make($config['driver'], array_except($config, ['driver']));
+        return $this->factory->make($config['driver'], Arr::except($config, ['driver']));
     }
 
     /**
