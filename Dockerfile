@@ -29,7 +29,7 @@ RUN docker-php-ext-install -j$(nproc) zip \
         && mkdir php-rdkafka \
         && cd php-rdkafka \
         && git clone https://github.com/arnaud-lb/php-rdkafka.git . \
-        && git checkout php7 \
+        && git checkout master \
         && phpize \
         && ./configure \
         && make -j$(nproc) \
@@ -60,4 +60,5 @@ COPY phpunit.xml /opt/laravel-pubsub/
 
 RUN composer dump-autoload --no-interaction
 
-CMD ["/bin/bash"]
+# Keep the container running so that can run tests manually
+CMD ["php-fpm"]
