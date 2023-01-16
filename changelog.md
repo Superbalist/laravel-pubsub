@@ -1,5 +1,16 @@
 # Changelog
 
+## 3.2.1 - 2019-10-07
+* Bugfix, remove call to setDetaulTopicConf() in RdKafka\Conf, which was deprecated in rdkafka 4.0.0 (pecl)
+
+## 3.2.0 - 2019-09-24
+
+* Allow enabling SASL by setting KAFKA_SECURITY_PROTOCOL env variable
+
+## 3.1.0 - 2019-07-23
+
+* Add support for SASL authentication
+
 ## 3.0.0 - 2017-07-25
 
 * Bump up to superbalist/php-pubsub-google-cloud ^5.0 which allows for background daemon support
