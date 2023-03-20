@@ -4,7 +4,9 @@ php:
   - 5.6
   - 7.0
   - 7.1
-  - nightly
+
+env:
+  - VERSION=3.0.1
 
 before_script:
   - composer install

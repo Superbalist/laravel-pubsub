@@ -91,11 +91,11 @@ class PubSubConnectionFactory
         $topicConf->set('auto.offset.reset', 'smallest');
 
         $conf = $this->container->makeWith('pubsub.kafka.conf');
+
         $conf->set('group.id', array_get($config, 'consumer_group_id', 'php-pubsub'));
         $conf->set('metadata.broker.list', $config['brokers']);
         $conf->set('enable.auto.commit', 'false');
         $conf->set('offset.store.method', 'broker');
-        $conf->setDefaultTopicConf($topicConf);
 
         $consumer = $this->container->makeWith('pubsub.kafka.consumer', ['conf' => $conf]);
 
